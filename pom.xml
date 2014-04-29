@@ -10,7 +10,7 @@
     <name>Data Search</name>
     <description>Helps to find tables and columns where specific value is stored without free text search catalog</description>
 
-    <version>1.2.6</version>
+    <version>1.3.0</version>
     <packaging>bundle</packaging>
 
     <parent>
