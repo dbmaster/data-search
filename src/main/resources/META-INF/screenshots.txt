@@ -1,0 +1,2 @@
+data-search-1.png=Sample of search results for value Mozart
+data-search-2.png=Execution log of the tool. List of tables search was performed against
