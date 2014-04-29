@@ -1,0 +1,26 @@
+DECLARE @SearchText VARCHAR(300) SET @SearchText = 'MGIUSDRPL3'
+DECLARE @Tables TABLE(N INT, TableName VARCHAR(300), ColumnNamesCSVLike VARCHAR(6000), LIKESQL VARCHAR(6000))
+
+
+INSERT INTO @Tables (TableName, ColumnNamesCSVLike)
+SELECT T.TABLE_NAME AS TableName,
+(SELECT '['+C.Column_Name + '] LIKE ''%'+@SearchText+'%'' OR ' FROM INFORMATION_SCHEMA.Columns C
+ WHERE T.TABLE_NAME = C.TABLE_NAME AND C.DATA_TYPE IN ('nvarchar','varchar') FOR XML PATH(''))
+FROM INFORMATION_SCHEMA.Tables T
+
+--select len(ColumnNamesCSVLike),* from @Tables
+
+DELETE FROM @Tables WHERE ColumnNamesCSVLike IS NULL
+INSERT INTO @Tables (N, TableName, ColumnNamesCSVLike)
+SELECT ROW_NUMBER() OVER(ORDER BY TableName), TableName, ColumnNamesCSVLike  FROM @Tables
+DELETE FROM @Tables WHERE N IS NULL
+UPDATE @Tables SET ColumnNamesCSVLike = SUBSTRING(ColumnNamesCSVLike, 0, LEN(ColumnNamesCSVLike)-2)
+UPDATE @Tables SET LIKESQL = 'SELECT '''+TableName+''',* FROM ['+TableName+'] WHERE '+ColumnNamesCSVLike
+DECLARE @C INT, @I INT, @LIKESQL VARCHAR(4000)
+SELECT @I = 1, @C = COUNT(*) FROM @Tables
+WHILE @I <= @C BEGIN
+SELECT @LIKESQL = LIKESQL FROM @Tables WHERE N = @I
+    SET @I = @I +1
+    --PRINT @LIKESQL
+    EXEC(@LIKESQL)
+END

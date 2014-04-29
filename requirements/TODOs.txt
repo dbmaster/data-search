@@ -1,0 +1,31 @@
+- Link this plugin with db-query
+
+this will require to change sql like this (for sql server)
+
+declare @search_terms varchar(20)
+
+select @search_terms = 'John'
+
+select top 1 * from [Person].[Person] with (NOLOCK)
+where [BusinessEntityID] like @search_terms or
+      [PersonType] like @search_terms or
+      [NameStyle] like @search_terms or
+      [Title] like @search_terms or
+      [FirstName] like @search_terms or
+      [MiddleName] like @search_terms or
+      [LastName] like @search_terms or
+      [Suffix] like @search_terms or
+      [EmailPromotion] like @search_terms or
+      [rowguid] like @search_terms or
+      [ModifiedDate] like @search_terms
+
+
+
+- Oracle : select * from table where dbms_lob.instr(blob_column, utl_raw.CAST_TO_RAW('search_term'), 1, 1) > 0
+
+
+-- handle case when all columns in table are from "unknown" type, e.g. sql_variant
+-- when nothing was found add a different message
+   Search Completed. Found value backup in tables []
+
+-  replace queries severity level

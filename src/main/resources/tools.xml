@@ -1,0 +1,17 @@
+<tools>
+    <tool id="data-search" title="Data Search" projectTypes="inventory">
+
+        <description>Search for a string in database</description>
+
+        <parameters>
+            <parameter name="p_database"     title="Source Database" type="string" required="true" 
+                       suggestion="project_databases" width="300" />
+
+            <parameter name="p_search_terms" title="Search For"  type="string" required="true" width="300" />
+            <parameter name="p_max_rows"     title="Max rows per table"  type="integer" required="true" defaultValue="1" />
+        </parameters>
+
+        <output  script="data_search.groovy" type="html" />
+
+    </tool>
+</tools>
