@@ -1,7 +1,3 @@
-/*
- *  File Version:  $Id: free_text_search.groovy 153 2013-06-08 20:31:25Z schristin $
- */
-
 import groovy.sql.Sql
 import com.branegy.dbmaster.model.*
 import com.branegy.service.connection.api.ConnectionService
