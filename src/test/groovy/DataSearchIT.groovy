@@ -13,10 +13,10 @@ public class DataSearchIT extends BaseToolTestNGCase {
                            "p_search_terms" :  getTestProperty("p_search_terms"),
                            "p_max_rows"     :  Integer.valueOf(getTestProperty("p_max_rows"))  ]
 
-        String found_tables = tools.toolExecutor("data-search", parameters).execute();
+        String found_tables = tools.toolExecutor("data-search", parameters).execute()
         //def bindings  = handler.getBinding()
         //def found_tables = bindings["search_result"]
-        System.out.println("done! "+found_tables.substring(0,3));
+        System.out.println("done! "+found_tables)
 
         //assert found_tables == ['Person.Person'] : "Unexpected search results ${found_tables}"
         //println "test";
