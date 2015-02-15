@@ -9,9 +9,9 @@ public class DataSearchIT extends BaseToolTestNGCase {
 
     @Test
     public void test() {
-        def parameters = [ "p_database"     :  "10a.SFANOW_DB",
-                           "p_search_terms" :  "1",
-                           "p_max_rows"     :   1  ]
+        def parameters = [ "p_database"     :  getTestProperty("p_database"),
+                           "p_search_terms" :  getTestProperty("p_search_terms"),
+                           "p_max_rows"     :  Integer.valueOf(getTestProperty("p_max_rows"))  ]
 
         String found_tables = tools.toolExecutor("data-search", parameters).execute();
         //def bindings  = handler.getBinding()
