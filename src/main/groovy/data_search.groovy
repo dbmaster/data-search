@@ -92,8 +92,13 @@ model.tables.each { table  ->
     }
 }
 
-connection.close()
-println "\nSearch Completed. Found value ${p_search_terms} in tables ${search_result}</pre>"
+connection.close
+
+if (search_result.size()==0) {
+    println "\nSearch completed. '${p_search_terms}' was not found in any tables"
+} else {
+    println "\nSearch completed. '${p_search_terms}' was found in tables ${search_result}"
+}
 
 logger.info("Search completed")
 
