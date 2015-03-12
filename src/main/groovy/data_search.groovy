@@ -92,7 +92,7 @@ model.tables.each { table  ->
     }
 }
 
-connection.close
+connection.close()
 
 if (search_result.size()==0) {
     println "\nSearch completed. '${p_search_terms}' was not found in any tables"

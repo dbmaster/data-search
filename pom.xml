@@ -9,7 +9,7 @@
    </parent>
 
    <artifactId>data-search</artifactId>
-   <version>1.4.2</version>
+   <version>1.4.3</version>
    <packaging>bundle</packaging>
 
    <name>Data Search</name>
