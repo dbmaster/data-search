@@ -1,5 +1,6 @@
 import io.dbmaster.testng.BaseToolTestNGCase;
 
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test
 
 import com.branegy.tools.api.ExportType;
@@ -8,10 +9,11 @@ import com.branegy.tools.api.ExportType;
 public class DataSearchIT extends BaseToolTestNGCase {
 
     @Test
-    public void test() {
-        def parameters = [ "p_database"     :  getTestProperty("p_database"),
-                           "p_search_terms" :  getTestProperty("p_search_terms"),
-                           "p_max_rows"     :  Integer.valueOf(getTestProperty("p_max_rows"))  ]
+    @Parameters(["p_database","p_search_terms","p_max_rows"])
+    public void test(String p_database, String p_search_terms, int p_max_rows) {
+        def parameters = [ "p_database"     :  p_database,
+                           "p_search_terms" :  p_search_terms,
+                           "p_max_rows"     :  p_max_rows  ]
 
         String found_tables = tools.toolExecutor("data-search", parameters).execute()
         //def bindings  = handler.getBinding()
