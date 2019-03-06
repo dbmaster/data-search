@@ -2,7 +2,7 @@ import groovy.sql.Sql
 import com.branegy.dbmaster.model.*
 import com.branegy.service.connection.api.ConnectionService
 import com.branegy.dbmaster.connection.ConnectionProvider
-import com.branegy.dbmaster.connection.JDBCDialect
+import com.branegy.dbmaster.connection.JdbcDialect
 import org.apache.commons.io.IOUtils
 
 connectionSrv = dbm.getService(ConnectionService.class)
@@ -12,22 +12,31 @@ def search_database  = p_database.split("\\.")[1]
 
 RevEngineeringOptions options = new RevEngineeringOptions();
 options.database = search_database
-options.importIndexes = false
-options.importViews = false
-options.importProcedures = false
+options.rawConfig = 
+ "+Table:*\n"+
+ //"+View:*\n"+
+ //"+Function:*\n"+
+ //"+Procedure:*\n"+
+ //"+Index:*\n"+
+ //"+Constraint:*\n"+
+ //"+Trigger:*\n"+
+ //"+ForeignKey:*\n"+
+ //"+SecurityObject:*\n"+
+ "+Column:*\n"+
+ //"+Parameter:*\n"+
+ "+ExtendedProperty:*";
 
 connectionInfo = connectionSrv.findByName(search_server)
-connector = ConnectionProvider.getConnector(connectionInfo)
 
 logger.info("Connecting to server")
-dialect = connector.connect()
+dialect = ConnectionProvider.get().getDialect(connectionInfo)
+dbm.closeResourceOnExit(dialect)
 logger.info("Retrieving list of tables")
 model = dialect.getModel(search_server, options)
 
 logger.info("Searching...")
 
-connection = connector.getJdbcConnection(search_database)
-dbm.closeResourceOnExit(connection)
+connection = dialect.getConnection()
 
 def sql = new Sql(connection)
 
@@ -92,8 +101,6 @@ model.tables.each { table  ->
     }
 }
 
-connection.close()
-
 if (search_result.size()==0) {
     println "\nSearch completed. '${p_search_terms}' was not found in any tables"
 } else {
@@ -102,7 +109,7 @@ if (search_result.size()==0) {
 
 logger.info("Search completed")
 
-def generateSql(Table table, JDBCDialect dialect){
+def generateSql(Table table, JdbcDialect dialect){
    def tableName = table.name
    def columns=    table.columns
 
